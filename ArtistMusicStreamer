@@ -1,0 +1,60 @@
+import 'package:amplayfie/data/artist_repository.dart';
+import 'package:amplayfie/measures/measures.dart';
+import 'package:amplayfie/screens/mainscreens/music_previews/artist_music_preview.dart';
+import 'package:flutter/material.dart';
+
+class ArtistMusicStreamer extends StatefulWidget {
+  @override
+  _ArtistMusicStreamerState createState() => _ArtistMusicStreamerState();
+}
+
+class _ArtistMusicStreamerState extends State<ArtistMusicStreamer> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: ArtistRepository().showArtists(),
+        builder: (context, albumsSnapshot) {
+          if (albumsSnapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              height: 200,
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(Measures.roundedCornerAmount),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: Measures.pagePaddingMedium),
+                  itemCount: 5,
+                  itemBuilder: (context, index) => ArtistMusicPreview(
+                      id: "identifier",
+                      imageUrl: "",
+                      artistName: "Artist name",
+                      subtitle: "subtitle",
+                      info: "info"),
+                ),
+              ),
+            );
+          }
+          final artistDocs = albumsSnapshot.data.docs;
+          return Container(
+            height: 200,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Measures.roundedCornerAmount),
+              child: ListView.builder(
+                padding: EdgeInsets.only(left: Measures.pagePaddingBig),
+                scrollDirection: Axis.horizontal,
+                itemCount: artistDocs.length,
+                itemBuilder: (context, index) => ArtistMusicPreview(
+                  id: artistDocs[index].documentID,
+                  imageUrl: artistDocs[index].data()[ArtistRepository.IMAGEURL],
+                  artistName: artistDocs[index].data()[ArtistRepository.NAME],
+                  subtitle: artistDocs[index].data()[ArtistRepository.INSTANAME],
+                  info: artistDocs[index].data()[ArtistRepository.EMAIL],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+}
