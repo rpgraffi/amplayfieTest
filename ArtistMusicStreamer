@@ -9,12 +9,20 @@ class ArtistMusicStreamer extends StatefulWidget {
 }
 
 class _ArtistMusicStreamerState extends State<ArtistMusicStreamer> {
+  Future _artists;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _artists = ArtistRepository().showArtists();
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: ArtistRepository().showArtists(),
+        future: _artists,
         builder: (context, albumsSnapshot) {
           if (albumsSnapshot.connectionState == ConnectionState.waiting) {
             return Container(
