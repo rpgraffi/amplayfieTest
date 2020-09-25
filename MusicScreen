@@ -1,0 +1,57 @@
+import 'package:amplayfie/measures/measures.dart';
+import 'package:amplayfie/screens/mainscreens/music_previews/album_music_streamer.dart';
+import 'package:amplayfie/screens/mainscreens/music_previews/artist_music_streamer.dart';
+import 'package:amplayfie/screens/mainscreens/music_previews/playlist_music_preview.dart';
+import 'package:amplayfie/widgets/colored_borders.dart';
+import 'package:amplayfie/widgets/custom_fixed_scaffold.dart';
+import 'package:amplayfie/widgets/text_title.dart';
+import 'package:flutter/material.dart';
+import 'music_previews/music_streamer_wraper.dart';
+
+class MusicScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomFixedScaffold(
+      title: "Music",
+      body: Hero(
+        tag: "music",
+        child: ColoredBorders(
+            child: ListView(
+          padding: EdgeInsets.only(left: 0, top: 100),
+          children: [
+            MusicStreamerWraper(
+              title: "Artists",
+              widget: ArtistMusicStreamer(),
+            ),
+            MusicStreamerWraper(
+              title: "New Album",
+              widget: NewAlbumsMusicStreamer(),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: Measures.pagePaddingMedium),
+                  child: TextTitle(
+                    title: "Playlists",
+                  ),
+                ),
+                PlaylistPreview(
+                  imageUrl: "",
+                  title: "Short & Sad",
+                  subtitle: "Lowfay",
+                  musicGenre: "Lo-Fi",
+                  openUrl:
+                      "https://open.spotify.com/playlist/7bQmN1HQUJY8gQTkGLm8c3?si=qs4yC6ZASKeXxuAcbwvZEg",
+                ),
+                SizedBox(
+                  height: Measures.mainPagePadding * 2,
+                ),
+              ],
+            ),
+          ],
+        )),
+      ),
+    );
+  }
+}
